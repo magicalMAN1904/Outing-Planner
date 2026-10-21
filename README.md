@@ -43,13 +43,25 @@ These capabilities were checked against the development repository's main-branch
 
 ## Application preview
 
-The supplied development captures were already heavily masked. These two reviewed excerpts preserve only calendar layout and availability colors; event content and identifying panels are removed. They are limited visual previews, not demonstrations of a complete user journey.
+### Calendar and shared availability
 
-| Calendar layout | Availability color detail |
+![Outing Planner calendar with month navigation, event cards, friend selection, and an availability legend](calendar.png)
+
+The main calendar brings personal events, friend selection, and shared availability into one planning view.
+
+### Explore the application
+
+| Activity discovery | Group planning |
 | :---: | :---: |
-| <img src="calendar.png" alt="Cropped calendar layout with event cells and account details redacted" width="534"> | <img src="availability.png" alt="Cropped, previously masked availability color grid with labels removed" width="300"> |
+| <img src="activity-discovery.png" alt="Activity catalog with city search, filters, and venue details" width="440"> | <img src="group-planning.png" alt="Selected activity with availability timeline, time controls, and proposal action" width="440"> |
+| Browse the development catalog by city and filters, then inspect venue details. Example listings contain demonstration content. | Select an activity, compare the displayed time windows, choose a time, and send an outing proposal. |
 
-Fresh screenshots using synthetic demo accounts will make the product easier to evaluate. No unreviewed captures are included. See [screenshot review](SCREENSHOT_REVIEW.md).
+| Google Calendar connection | Availability preferences |
+| :---: | :---: |
+| <img src="google-calendar.png" alt="Google Calendar connection, calendar selection, availability refresh, and owner-event controls" width="440"> | <img src="availability-preferences.png" alt="Owner-event privacy controls and recurring weekly availability settings" width="440"> |
+| Manage the read-only connection, select availability calendars, refresh busy time, and control owner-event display. | Set recurring weekly unavailability. The separate Planning Preferences panel is marked coming soon. |
+
+Screenshots show the development application. The supplied images were reviewed and approved by the project owner for public display. See [screenshot review](SCREENSHOT_REVIEW.md).
 
 ## Technology stack
 
@@ -128,7 +140,7 @@ Current limitations include a seeded activity catalog, polling instead of push u
 | Real-world planning | Define reservation and booking handoffs or integrations |
 | Calendar export | Write confirmed Outing Planner events to Google Calendar |
 | Provider support | Explore Apple Calendar integration |
-| Product polish | Improve update delivery, usability, and presentation with synthetic-data demo captures |
+| Product polish | Improve update delivery, usability, and the demo experience |
 
 Roadmap items are proposed work, not implemented capabilities or delivery commitments.
 
@@ -141,4 +153,5 @@ The emphasis is on making engineering decisions explicit, validating behavior ac
 ---
 
 <sub>Showcase verified October 20, 2026. Public materials are intentionally limited to this overview and reviewed visual assets.</sub>
+
 

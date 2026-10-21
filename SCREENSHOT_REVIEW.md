@@ -1,16 +1,17 @@
 # Screenshot review
 
-Reviewed October 20, 2026.
+Updated October 20, 2026.
 
-Only two derived PNGs are published. Both were visually inspected after processing.
+The five revised screenshots were visually inspected. The project owner independently reviewed them, confirmed that no sensitive information is showing, and explicitly approved publication of the supplied images without further redaction.
 
-| Published file | Treatment |
+| File | Public preview |
 | --- | --- |
-| `calendar.png` | Cropped to calendar UI; event cell interiors and sidebar content overwritten with solid fills; identifying details removed. |
-| `availability.png` | Cropped to the already masked color grid only; all surrounding headings, activity content, account panels, and desktop context discarded. |
+| `calendar.png` | Primary calendar and shared-availability view |
+| `activity-discovery.png` | Activity catalog, filters, and venue details |
+| `group-planning.png` | Activity selection, time windows, and proposal controls |
+| `google-calendar.png` | Read-only Google Calendar connection and availability settings |
+| `availability-preferences.png` | Recurring weekly availability and owner-event controls |
 
-Both files were flattened into fresh RGB PNGs with no source metadata or hidden layers. Removed pixels are not included. No originals are published.
+The revised images replace the earlier masked previews in the README. They show a development application; example listing content is not a verified commercial offer. The Planning Preferences panel remains labeled coming soon.
 
-The supplied preferences and group-planning captures were too obscured to add useful detail; the planning-flow capture was blank. All three were omitted. The retained previews are explicitly labeled as masked excerpts in the README.
-
-Recommended replacement: full-resolution captures made with synthetic demo accounts, fictional names, and non-personal calendar events, followed by a new privacy review before publication.
+Only these approved screenshot files and public showcase documentation are included in this update. No private application source or internal development documents are published.

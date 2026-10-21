@@ -108,6 +108,14 @@ Free/busy refresh is explicit and bounded. Availability calculations use the cac
 - **Security beyond the login screen.** Server-side sessions, session rotation on authentication, route ownership checks, CSRF validation, prepared statements, per-IP rate limiting, and encrypted provider tokens.
 - **Integration discipline.** Frontend/backend contracts, explicit schema changes, focused regression tests, pull-request review, and separate CI checks support changes across the stack.
 
+## Engineering Deep Dives
+
+Three case studies explain the implementation decisions, trade-offs, and current limitations:
+
+- [Google Calendar integration](docs/GOOGLE_CALENDAR.md) — OAuth, encrypted credentials, cached busy time, and owner-only event display.
+- [Group availability](docs/GROUP_AVAILABILITY.md) — interval processing, planning boundaries, and external-calendar uncertainty.
+- [Backend security](docs/SECURITY.md) — sessions, ownership checks, CSRF protection, and regression coverage.
+
 ## Testing infrastructure
 
 The private development repository has four distinct GitHub Actions gates:
@@ -153,5 +161,6 @@ The emphasis is on making engineering decisions explicit, validating behavior ac
 ---
 
 <sub>Showcase verified October 20, 2026. Public materials are intentionally limited to this overview and reviewed visual assets.</sub>
+
 
 

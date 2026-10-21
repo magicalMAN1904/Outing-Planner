@@ -2,66 +2,109 @@
 
 # Outing Planner
 
-**Less back-and-forth. More getting together.**
+### Less back-and-forth. More getting together.
 
-A full-stack scheduling application that helps friends find shared free time and turn an outing proposal into a confirmed group plan.
+A full-stack application for finding shared free time, choosing an activity, and coordinating a group outing.
 
 **React 19 · Java 17 · Spring Boot 4 · MySQL · Google Calendar API**
 
-**Active development · Pre-MVP · Portfolio showcase**
+**Active development · Pre-MVP · Public portfolio showcase**
 
-[Features](#implemented-features) · [Preview](#application-preview) · [Architecture](#system-architecture) · [Engineering](#engineering-highlights) · [Testing](#testing-infrastructure) · [Roadmap](#roadmap)
+[Preview](#application-preview) · [Features](#implemented-features) · [Engineering](#engineering-at-a-glance) · [Architecture](#system-architecture) · [Deep Dives](#engineering-deep-dives) · [Testing](#testing-infrastructure) · [Roadmap](#roadmap)
 
 </div>
 
 ## Overview
 
-Planning an outing usually means comparing schedules across several conversations, choosing an activity, and checking whether everyone can make it. Outing Planner brings schedule coordination, activity browsing, invitations, and confirmation into one application.
+Making plans with friends can mean comparing several calendars, agreeing on an activity, and chasing responses in multiple conversations. Outing Planner brings those steps into one workflow:
 
-A typical flow is to **compare availability → choose an activity → propose a time → collect responses → confirm the group outing**. Connected Google calendars can contribute busy time without exposing a friend's event details.
+**Compare availability → Explore activities → Propose an outing → Gather responses → Confirm the plan**
 
-This repository presents the product and its engineering. Application source and development infrastructure remain private. It does not provide an installable application or a public live demo.
-
-## Implemented features
-
-These capabilities were checked against the development repository's main-branch implementation and documentation on **October 20, 2026**.
-
-| Area | Current behavior |
-| --- | --- |
-| Accounts | Registration, login, logout, profile updates, and session restoration after a browser refresh |
-| Calendar | Personal events and scheduled outings in a shared calendar interface, with month navigation and availability overlays |
-| Scheduling constraints | Recurring weekly unavailability, event conflict checks, past-date guards, and activity operating-hours validation |
-| Friends | Search by username or email; send, accept, decline, and remove friend connections |
-| Shared availability | Compare one or multiple friends' free windows over selected dates |
-| Group planning | Create proposals, accept or decline invitations, cancel proposals, and confirm accepted proposals into group outings |
-| Activity browsing | Browse the existing database catalog and filter by city, price, pet-friendliness, and physical activity |
-| Google Calendar | OAuth connection and disconnect, calendar selection, explicit free/busy refresh, and optional display of the connected owner's timed and all-day events |
-
-**Calendar privacy:** Friends' Google busy time affects shared availability calculations. Their Google event titles, descriptions, and individual busy-event cards are not returned as part of shared availability. Owner event display is separately permissioned and optional.
-
-**Booking boundary:** Confirming an outing schedules it within Outing Planner. It does not make a restaurant reservation, purchase tickets, or create an event in Google Calendar.
+The goal is to reduce coordination friction. **This is an actively developed, pre-MVP project**: confirming an outing inside Outing Planner does *not* make a third-party reservation, buy tickets, or write an event to Google Calendar.
 
 ## Application preview
 
-### Calendar and shared availability
+### Interactive calendar
 
-![Outing Planner calendar with month navigation, event cards, friend selection, and an availability legend](calendar.png)
+![Outing Planner calendar with month navigation, event cards, friend selection and availability legend](calendar.png)
 
-The main calendar brings personal events, friend selection, and shared availability into one planning view.
+The calendar combines personal events, scheduled outings, and day-level group-availability indicators.
 
-### Explore the application
+### Explore, coordinate and connect
 
-| Activity discovery | Group planning |
+| Browse activities | Plan with friends |
 | :---: | :---: |
-| <img src="activity-discovery.png" alt="Activity catalog with city search, filters, and venue details" width="440"> | <img src="group-planning.png" alt="Selected activity with availability timeline, time controls, and proposal action" width="440"> |
-| Browse the development catalog by city and filters, then inspect venue details. Example listings contain demonstration content. | Select an activity, compare the displayed time windows, choose a time, and send an outing proposal. |
+| <img src="activity-discovery.png" alt="Activity catalog with city and activity filters" width="440"> | <img src="group-planning.png" alt="Activity detail and available time selection for an outing proposal" width="440"> |
+| Search and filter the current development catalog. Some listings are demonstration data. | Choose an activity and time, and send a proposal to invited friends. |
 
-| Google Calendar connection | Availability preferences |
+| Google Calendar integration | Availability preferences |
 | :---: | :---: |
-| <img src="google-calendar.png" alt="Google Calendar connection, calendar selection, availability refresh, and owner-event controls" width="440"> | <img src="availability-preferences.png" alt="Owner-event privacy controls and recurring weekly availability settings" width="440"> |
-| Manage the read-only connection, select availability calendars, refresh busy time, and control owner-event display. | Set recurring weekly unavailability. The separate Planning Preferences panel is marked coming soon. |
+| <img src="google-calendar.png" alt="Google Calendar connection and read-only calendar options" width="440"> | <img src="availability-preferences.png" alt="Recurring weekly unavailability settings and calendar privacy controls" width="440"> |
+| Connect Google Calendar, select calendars for FreeBusy, refresh availability, and optionally show your own events. | Define recurring weekly unavailable periods. The separate Planning Preferences panel is marked coming soon. |
 
-Screenshots show the development application. The supplied images were reviewed and approved by the project owner for public display. See [screenshot review](SCREENSHOT_REVIEW.md).
+Screenshots are from the development application and were reviewed and approved by the project owner for public display. See [screenshot review](SCREENSHOT_REVIEW.md).
+
+## Engineering at a glance
+
+| Challenge | Implemented approach | Explore |
+| --- | --- | --- |
+| **Find common free time** | Combine scheduling constraints and busy intervals, then calculate mutually free windows for participants. | [Availability walkthrough](docs/GROUP_AVAILABILITY.md) |
+| **Integrate calendars without exposing details** | Use Google OAuth and cached FreeBusy information; keep owner-only event detail separate from shared availability. | [Google Calendar case study](docs/GOOGLE_CALENDAR.md) |
+| **Protect user data across endpoints** | Server-side sessions, route ownership checks, CSRF validation, encrypted provider credentials and parameterized SQL. | [Security case study](docs/SECURITY.md) |
+
+The app also supports a proposal lifecycle: invited participants respond, and the creator confirms once the required acceptance conditions are met.
+
+## Implemented features
+
+Capabilities checked against the development main branch on **October 20, 2026**.
+
+| Area | Available in the development application |
+| --- | --- |
+| Accounts | Register, sign in/out, update profile, restore a session after refresh |
+| Calendar | Personal events, scheduled outings, month navigation and availability overlays |
+| Constraints | Recurring weekly unavailability, conflict checks, past-date and activity-hours validation |
+| Friends | Find users by username or email; send, accept, decline and remove connections |
+| Group availability | Compare one or several friends' available times across dates |
+| Proposals | Create, respond to, cancel and confirm group outing proposals |
+| Activity catalog | Browse/filter currently stored occasions by city, price, pet-friendliness and physical activity |
+| Google Calendar | Connect/disconnect, select availability calendars, explicitly refresh FreeBusy, optionally display your own read-only events |
+
+**Privacy boundary:** A friend's Google Calendar contributes busy time to the *availability calculation*, not event titles, descriptions, or individual busy-event cards to the group view. Showing the connected owner's events is a separate optional permission.
+
+## System architecture
+
+The following diagram describes the **implemented application**, not planned infrastructure.
+
+```mermaid
+flowchart TB
+    USER["User in browser"] --> FE["React 19 + Vite frontend"]
+
+    subgraph BE["Spring Boot application"]
+      direction TB
+      GUARD["Rate limiting, authentication, ownership and CSRF"]
+      PLAN["Planning controllers and interval calculations"]
+      CAL["Google integration controller and services"]
+      JDBC["JDBC DAOs / prepared statements"]
+      GUARD --> PLAN
+      GUARD --> CAL
+      PLAN --> JDBC
+      CAL --> JDBC
+    end
+
+    FE -->|"REST requests / session cookie"| GUARD
+    JDBC -->|"HikariCP"| DB[("MySQL: application data, sessions, encrypted credentials, busy cache")]
+    CAL <-->|"OAuth / Calendar / FreeBusy APIs"| GOOGLE["Google Calendar"]
+```
+
+**Key architectural boundaries:**
+
+- **React frontend:** Presents the calendar, invitations, preferences and activity catalog; calls the backend through REST APIs.
+- **Java backend:** Controllers handle planning workflows and availability logic; raw JDBC DAOs provide the persistence layer rather than an ORM.
+- **MySQL:** Stores application entities, server-side sessions, encrypted Google credential material and cached external busy periods.
+- **Google integration:** Explicit refresh populates FreeBusy cache for availability calculations. Reading the owner's event details is optional and does not store that event content in MySQL.
+- **Privacy/security:** Authorization is enforced server-side. Friends' Google event contents are not exposed through shared availability responses.
+
+This is a simplified component view, not a claim that the app uses microservices, real-time push updates or an automated Google write-sync service.
 
 ## Technology stack
 
@@ -69,35 +112,10 @@ Screenshots show the development application. The supplied images were reviewed 
 | --- | --- |
 | Frontend | React 19, JavaScript, Vite 8, CSS, pnpm |
 | Backend | Java 17, Spring Boot 4, Maven, REST controllers |
-| Persistence | MySQL 8, handwritten JDBC with prepared statements, HikariCP connection pooling, SQL migrations |
-| Authentication | Spring Session JDBC, BCrypt password hashing, session ownership checks, CSRF protection |
-| External integration | Google OAuth 2.0, Calendar List, FreeBusy, and read-only owner-event access |
-| Verification | JUnit 5, Spring MockMvc, Vitest, React Testing Library, jsdom, ESLint, GitHub Actions |
-
-## System architecture
-
-```mermaid
-flowchart TD
-    UI["React browser application"]
-    API["Spring Boot REST API"]
-    GUARD["Session, authorization, CSRF and rate limiting"]
-    DOMAIN["Planning controllers and JDBC data access"]
-    GOOGLE["Google integration services"]
-    DB[("MySQL")]
-    PROVIDER["Google OAuth and Calendar APIs"]
-
-    UI -->|"Session-authenticated requests"| API
-    API --> GUARD
-    GUARD --> DOMAIN
-    GUARD --> GOOGLE
-    DOMAIN -->|"HikariCP connection pool"| DB
-    GOOGLE -->|"Credentials and busy-time cache"| DB
-    GOOGLE --> PROVIDER
-```
-
-Core planning rules live in controllers and JDBC data-access classes; Google-specific services handle OAuth and provider operations. MySQL stores application data, server-side sessions, encrypted Google credentials, and cached busy intervals.
-
-Free/busy refresh is explicit and bounded. Availability calculations use the cache rather than calling Google for every comparison. Optional owner-event display reads from Google and does not persist event content. Frontend updates currently use polling.
+| Data | MySQL 8, raw JDBC, prepared statements, HikariCP, SQL migrations |
+| Identity and security | Spring Session JDBC, BCrypt, CSRF and request authorization |
+| Integration | Google OAuth 2.0, Calendar List, FreeBusy and owner-only read access |
+| Testing and tooling | JUnit 5, Spring MockMvc, Vitest, React Testing Library, ESLint, GitHub Actions |
 
 ## Engineering highlights
 
@@ -110,57 +128,54 @@ Free/busy refresh is explicit and bounded. Availability calculations use the cac
 
 ## Engineering Deep Dives
 
-Three case studies explain the implementation decisions, trade-offs, and current limitations:
+These public-facing case studies explain specific problems, design choices, trade-offs and known limitations without copying the private codebase:
 
-- [Google Calendar integration](docs/GOOGLE_CALENDAR.md) — OAuth, encrypted credentials, cached busy time, and owner-only event display.
-- [Group availability](docs/GROUP_AVAILABILITY.md) — interval processing, planning boundaries, and external-calendar uncertainty.
-- [Backend security](docs/SECURITY.md) — sessions, ownership checks, CSRF protection, and regression coverage.
+- **[Finding Time Together — Group Availability](docs/GROUP_AVAILABILITY.md):** Annotated scheduling examples, interval processing and uncertain Google Calendar coverage.
+- **[Google Calendar Integration](docs/GOOGLE_CALENDAR.md):** OAuth lifecycle, credential handling, caching and data separation.
+- **[Backend Security](docs/SECURITY.md):** Session management, ownership checks, CSRF and defensive data access.
 
 ## Testing infrastructure
 
-The private development repository has four distinct GitHub Actions gates:
+The private development repository uses four separate GitHub Actions checks:
 
-| Gate | What it checks |
+| Check | Purpose |
 | --- | --- |
-| Backend Tests | Maven/JUnit suite, including HTTP-level MockMvc tests against disposable MySQL |
-| Frontend Tests | Vitest unit and component tests with jsdom and React Testing Library |
-| Frontend Build | Vite production build |
-| Frontend Lint | ESLint checks |
+| Backend tests | JUnit / MockMvc tests with isolated MySQL in CI |
+| Frontend tests | Vitest and React Testing Library |
+| Frontend build | Vite production build |
+| Frontend lint | ESLint checks |
 
-Backend CI initializes a base schema and replays SQL migrations in an isolated MySQL container. Frontend jobs install dependencies from the frozen lockfile. Failing backend runs retain test reports for diagnosis.
+**Historical verified baseline (September 2026):** 628 backend tests executed (zero failures/errors; one intentional skip) and 686 frontend tests passed. The four CI checks were demonstrated passing at that baseline. These figures are *not* a current-head run or a test-coverage percentage. This public showcase repository itself does not build the application.
 
-**Recorded CI baseline — September 2026:** 628 backend tests executed, with zero failures/errors and one intentional skip; 686 frontend tests passed. All four gates were demonstrated passing. A separate, unmerged negative-control branch deliberately changed two assertions: both test gates failed while build and lint remained green.
-
-These are historical verification results, not a new test run or a claim about current-head CI. Test count is not a coverage percentage. Application CI runs in the private development repository; this showcase has no application build.
+A separate, unmerged negative-control branch deliberately changed two assertions: both test gates failed while build and lint remained green. Backend CI initializes a base schema and replays SQL migrations in disposable MySQL; frontend jobs use the frozen dependency lockfile. Failing backend runs retain test reports for diagnosis.
 
 ## Development status
 
-**Pre-MVP, with working account, calendar, friendship, proposal, and inbound Google Calendar flows.** The implementation is under active development and is not presented as production-ready.
+**Working now:** Accounts, personal events, friendships, multi-person availability, outing proposals, an initial activity catalog, and inbound Google Calendar availability/owner-event display.
 
-Current limitations include a seeded activity catalog, polling instead of push updates, an explicitly refreshed external-availability cache, and in-memory rate limiting suited to a single application instance. External calendar refresh recovery, calendar selection controls, and remaining scheduling/filter edge cases need further work.
+The current application uses an explicitly refreshed FreeBusy cache, polling-based UI updates, a seeded activity catalog, and in-memory per-IP rate limiting for a single application instance. Calendar selection currently serves both availability and owner-event display; separate controls remain planned. This showcase provides no public live demo, and the application is not presented as production-ready.
 
 ## Roadmap
 
-| Priority area | Planned work |
-| --- | --- |
-| Reliability | Improve Google free/busy error recovery and resolve remaining scheduling and filtering edge cases |
-| Discovery | Expand the places and activities catalog and improve discovery |
-| Real-world planning | Define reservation and booking handoffs or integrations |
-| Calendar export | Write confirmed Outing Planner events to Google Calendar |
-| Provider support | Explore Apple Calendar integration |
-| Product polish | Improve update delivery, usability, and the demo experience |
+Planned work:
 
-Roadmap items are proposed work, not implemented capabilities or delivery commitments.
+| Area | Next work |
+| --- | --- |
+| Reliability | Improve FreeBusy error recovery and scheduling/filter edge cases |
+| Discovery | Expand the catalog of places and activities |
+| Real-world coordination | Design external reservation/booking handoffs or integrations |
+| Calendar export | Add outgoing confirmed-event synchronization to Google Calendar |
+| Additional integrations | Explore support for Apple Calendar |
+| Product polish | Improve updates, responsiveness, and the eventual demo experience |
+
+The roadmap describes intentions, not completed functionality or release commitments.
 
 ## Project ownership
 
-An independently initiated full-stack project covering product planning, architecture coordination, frontend/backend integration, testing, and iterative development. AI-assisted coding and review tools are part of the development workflow.
+Outing Planner is an independently initiated software engineering project involving product planning, requirements, architecture coordination, backend/frontend integration, testing and iterative development. AI-assisted implementation and review tools are part of the workflow; engineering decisions and acceptance remain human-directed.
 
-The emphasis is on making engineering decisions explicit, validating behavior across the stack, and turning a practical coordination problem into a maintainable application.
+This public repository is a **portfolio showcase**. The development repository and its application source are private; there is no public source checkout or live demo here.
 
 ---
 
-<sub>Showcase verified October 20, 2026. Public materials are intentionally limited to this overview and reviewed visual assets.</sub>
-
-
-
+<div align="center"><sub>Portfolio snapshot prepared October 2026 · Implemented/planned boundaries are intentionally explicit.</sub></div>
